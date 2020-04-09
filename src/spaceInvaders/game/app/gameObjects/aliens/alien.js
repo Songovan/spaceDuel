@@ -6,10 +6,12 @@ const numAlienLines = 2;
 const alienWidth = 100;
 const alienHeight = 90;
 const distanceBetweenAlienLines = 120;
+const distanceBetweenHorizontalAliens = 100;
 const initialDeviationFromTop = -585;
-const initialDeviationFromLeft = 150;
+const initialDeviationFromLeft = 100;
 let initialWidthPositions = [];
 let initialHeightPositions = [];
+let heightCorrector = [];
 
 export class AlienRenderer extends Component {
 
@@ -23,11 +25,21 @@ export class AlienRenderer extends Component {
 
     static getDerivedStateFromProps(props, state) {
         // initial positions calculation
+        let counter = 0;
+        var j = 0;
         for (var i = 0; i < numAlienLines; i++){
-            initialHeightPositions[i] = initialDeviationFromTop + (distanceBetweenAlienLines * i);
-        }
-        for (var i = 0; i < numAlinesPerLine; i++){
-            initialWidthPositions[i] = initialDeviationFromLeft + i * alienWidth;
+            initialHeightPositions[i] = initialDeviationFromTop + (distanceBetweenAlienLines * i)
+            - (counter) * alienHeight;
+            
+            for (j = 0; j < numAlinesPerLine; j++){
+
+                initialWidthPositions[j] = initialDeviationFromLeft 
+                + j * distanceBetweenHorizontalAliens;
+
+                heightCorrector.push(j * alienHeight);
+
+                counter++;
+            }
         }
         return null;
     }
@@ -36,13 +48,12 @@ export class AlienRenderer extends Component {
         var alienLines = [];
         for (var i = 0; i < numAlienLines; i++){
             for (var j = 0; j < numAlinesPerLine; j++){
-                debugger
                 alienLines.push(<Alien 
                     cssClass={this.props.cssClass} 
                     image={this.props.image}
                     alienWidth={alienWidth}
                     alienHeight={alienHeight}
-                    distanceToTop = {initialHeightPositions[i]}
+                    distanceToTop = {initialHeightPositions[i] - heightCorrector[j]}
                     distanceToLeft = {initialWidthPositions[j]}
                     />
                 )
@@ -75,7 +86,7 @@ export class Alien extends Component {
                 height={this.props.alienHeight}
                 style = {{
                     top : this.props.distanceToTop,
-                    left : this.props.distanceToLeft
+                    left : this.props.distanceToLeft,
                 }}
                 />
         )
