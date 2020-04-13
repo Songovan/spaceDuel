@@ -74,14 +74,14 @@ export class AlienRenderer extends Component {
     }
 
     handleKeyPress(e){
-        //MOVE
+        //START TO MOVE WHEN KEY IS PRESSED
         if (e.key === "a" || e.key === "d" || e.key === "s"){
             this.move();
         }
     }
 
     move() {
-        while (this.state.gameOver !== true) {
+        // while (this.state.gameOver !== true) {
 
             setTimeout(() => {
                 if (this.state.isDirectionLeft) {
@@ -90,7 +90,7 @@ export class AlienRenderer extends Component {
                     this.moveRight();
                 }
             }, this.state.restBetweenTranslations);
-        }
+        // }
         return null;
     }
 
