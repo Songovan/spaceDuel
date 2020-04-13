@@ -16,12 +16,22 @@ const cssClasses = {
 }
 
 export class Game extends React.Component{
+
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            gameOver : false,
+            cssClasses: cssClasses
+        }
+    }
+
     render(){
         return (
             <div>
-                <Field image = {field} cssClass={cssClasses.field}/>
-                <Spaceship image = {spaceship} cssClass={cssClasses.spaceship}/>
-                <AlienRenderer image = {alien} cssClass={cssClasses.alien}/>
+                <Field image = {field} cssClass={this.state.cssClasses.field}/>
+                <Spaceship image = {spaceship} cssClass={this.state.cssClasses.spaceship}/>
+                <AlienRenderer image = {alien} cssClass={this.state.cssClasses.alien} gameOver={this.state.gameOver}/>
             </div>
         );
     }

@@ -6,10 +6,6 @@
 .spaceship {
     position: relative;
     display: flex;
-    width: 100px;
-    height: 90px;
-    top: -90px;
-    left: 400px;
 }
 
 .alien {
