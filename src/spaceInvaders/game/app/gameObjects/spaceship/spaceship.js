@@ -9,12 +9,13 @@ export class Spaceship extends React.Component{
         this.state = {
             spaceshipWidth: 100,
             spaceshipHeight: 90,
-            deviationFromTop: -90,
+            deviationFromTop: props.deviationFromTop,
             deviationFromLeft: 400,
             minimunDeviationFromLeft: 0,
             maximumDeviationFromLeft: 800,
             timeBetweenMovement: 30,
-            pixelsOnHorizontalMove: 50
+            pixelsOnHorizontalMove: 50,
+            player: props.player
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -27,22 +28,29 @@ export class Spaceship extends React.Component{
 
     handleKeyPress(e){
         //MOVE
-        if (e.key === "a" || e.key === "d"){
+        debugger
+        if (this.state.player === "ONE" && (e.key === "a" || e.key === "d")){
+            this.move(e);
+        }
+        if (this.state.player === "TWO" && (e.key === "j" || e.key === "l")){
             this.move(e);
         }
         //SHOOT
-        if (e.key === "s") {
+        if (this.state.player === "ONE" && e.key === "s") {
+            alert('Piuuu');
+        }
+        if (this.state.player === "TWO" && e.key === "k") {
             alert('Piuuu');
         }
     }
 
     move(e){
         //letter A
-        if (e.key === "a") {
+        if (e.key === "a" || e.key === "j") {
             this.moveLeft(e);
         }
         //letter D
-        if (e.key === "d") {
+        if (e.key === "d" || e.key === "l") {
             this.moveRight(e);
         }
     }

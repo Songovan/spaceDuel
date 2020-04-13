@@ -22,7 +22,9 @@ export class Game extends React.Component{
     
         this.state = {
             gameOver : false,
-            cssClasses: cssClasses
+            cssClasses: cssClasses,
+            spaceshipMinimumDeviationFromTop: -90,
+            spaceshipDeviationFromEachOther: -500
         }
     }
 
@@ -30,8 +32,9 @@ export class Game extends React.Component{
         return (
             <div>
                 <Field image = {field} cssClass={this.state.cssClasses.field}/>
-                <Spaceship image = {spaceship} cssClass={this.state.cssClasses.spaceship}/>
-                <AlienRenderer image = {alien} cssClass={this.state.cssClasses.alien} gameOver={this.state.gameOver}/>
+                <Spaceship player={"ONE"} image = {spaceship} cssClass={this.state.cssClasses.spaceship} deviationFromTop={this.state.spaceshipMinimumDeviationFromTop}/>
+                <Spaceship player={"TWO"} image = {spaceship} cssClass={this.state.cssClasses.spaceship} deviationFromTop={this.state.spaceshipMinimumDeviationFromTop + this.state.spaceshipDeviationFromEachOther}/>
+                {/* <AlienRenderer image = {alien} cssClass={this.state.cssClasses.alien} gameOver={this.state.gameOver}/> */}
             </div>
         );
     }
