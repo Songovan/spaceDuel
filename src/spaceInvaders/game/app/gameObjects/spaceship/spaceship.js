@@ -142,10 +142,7 @@ export class Spaceship extends React.Component {
 export class Orb extends React.Component {
 
     returnImg(){
-        let visibility = "hidden";
-        if (this.props.shoot){
-            visibility = "visible";
-        }
+        let visibility = this.props.shoot ? "visible" : "hidden";
 
         return (
             <img

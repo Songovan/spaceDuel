@@ -1,9 +1,12 @@
 import React from 'react';
+import $ from 'jquery';
 
 import spaceship from '../resources/spaceship.png';
 import field from '../resources/field.jpg';
 import alien from '../resources/alien.png';
 import orb from '../resources/orb.png';
+import gameStartField from '../resources/game-start-field.png';
+import gameOverImage from '../resources/game-over.png';
 import './game.css';
 
 import {Field} from './app/field/field.js';
@@ -14,7 +17,9 @@ const cssClasses = {
     spaceship: 'spaceship',
     alien: 'alien',
     field: 'field',
-    orb: 'orb'
+    orb: 'orb',
+    gameStartField: 'gameStartField',
+    gameOverImage: 'gameOverImage'
 }
 
 export class Game extends React.Component{
@@ -23,14 +28,37 @@ export class Game extends React.Component{
         super(props)
     
         this.state = {
+            menu: true,
             gameOver : false,
             cssClasses: cssClasses,
             spaceshipMinimumDeviationFromTop: -90,
-            spaceshipDeviationFromEachOther: -550
+            spaceshipDeviationFromEachOther: -550,
         }
+
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    render(){
+    componentDidMount(props, state) {
+        $(document).one("keypress", this.handleKeyPress)
+        return null;
+    }
+
+    handleKeyPress(e) {
+        this.setState({menu: false});
+    }
+    
+
+    renderMenu(){
+        return (
+            <div>
+                <Field 
+                    image = {gameStartField}
+                    cssClass={this.state.cssClasses.gameStartField}/>
+            </div>
+        )
+    };
+
+    renderGame(){
         return (
             <div>
                 <Field image = {field} cssClass={this.state.cssClasses.field}/>
@@ -48,8 +76,37 @@ export class Game extends React.Component{
                     deviationFromTop={this.state.spaceshipMinimumDeviationFromTop + this.state.spaceshipDeviationFromEachOther}
                     orb={orb} 
                     orbClass={this.state.cssClasses.orb}/>
-                {/* <AlienRenderer image = {alien} cssClass={this.state.cssClasses.alien} gameOver={this.state.gameOver}/> */}
             </div>
         );
+    }
+
+    renderGameOver(){
+        return (
+            <div>
+                <Field 
+                    image = {field}
+                    cssClass={this.state.cssClasses.field}/>
+                <Field 
+                    image = {gameOverImage}
+                    cssClass={this.state.cssClasses.gameOverImage}/>
+            </div>
+        );
+    }
+
+    //MAIN METHOD
+    renderWorkflow(){
+        if (this.state.menu){
+            return this.renderMenu();
+        }
+
+        if (!this.state.gameOver){
+            return this.renderGame();
+        }
+
+        return this.renderGameOver();
+    }
+
+    render(){
+        return this.renderWorkflow();
     }
 }
