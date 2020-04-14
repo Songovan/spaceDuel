@@ -153,6 +153,7 @@ export class Alien extends Component {
                 style={{
                     top: this.props.distanceToTop,
                     left: this.props.distanceToLeft,
+                    display: "hidden"
                 }}
             />
         )
