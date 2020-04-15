@@ -19,8 +19,9 @@ export class Spaceship extends React.Component {
             shoot: false,
             orbDeviationFromTop: 0,
             originalOrbDeviationFromTop: 0,
+            orbDeviationFromLeft: 0,
             shotFPS: 100,
-            timeBetweenShots: 2000
+            timeBetweenShots: 100
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -37,6 +38,7 @@ export class Spaceship extends React.Component {
         //AT THE BEGGINING, THEY'RE BOTH THE SAME
         this.setState({originalOrbDeviationFromTop: topDeviationCorrection})
         this.setState({orbDeviationFromTop: topDeviationCorrection})
+        this.props.updatePlayerDeviation(this.props.player, this.state.deviationFromLeft);
 
         window.addEventListener("keypress", this.handleKeyPress, false);
         return null;
@@ -57,9 +59,12 @@ export class Spaceship extends React.Component {
     }
 
     shoot(player){
-        this.setState({shoot: true});
+        this.setState({
+            shoot: true,
+            orbDeviationFromLeft: this.state.deviationFromLeft
+        });
         if (player === "ONE"){
-            for (var i = 0; i < 450; i++){
+            for (var i = 0; i < 390; i++){
                 setTimeout(() => {
                     let totalValue = this.state.orbDeviationFromTop - 1;
                     this.setState({orbDeviationFromTop: totalValue});
@@ -67,7 +72,7 @@ export class Spaceship extends React.Component {
             }
         }
         if (player === "TWO"){
-            for (var i = 0; i < 700; i++){
+            for (var i = 0; i < 390; i++){
                 setTimeout(() => {
                     let totalValue = this.state.orbDeviationFromTop + 1;
                     this.setState({orbDeviationFromTop: totalValue});
@@ -100,6 +105,7 @@ export class Spaceship extends React.Component {
                 }, this.state.timeBetweenMovement);
             }
         }
+        this.props.updatePlayerDeviation(this.props.player, this.state.deviationFromLeft);
     }
 
     moveRight(e) {
@@ -110,9 +116,33 @@ export class Spaceship extends React.Component {
                 }, this.state.timeBetweenMovement);
             }
         }
+        this.props.updatePlayerDeviation(this.props.player, this.state.deviationFromLeft);
+    }
+
+    checkIfIsHit(){
+        let orbHeight = this.state.orbDeviationFromTop - this.state.originalOrbDeviationFromTop;
+        let otherPlayerHorizontalDeviation = this.props.otherPlayerDeviation;
+        let orbHorizontalDeviation = this.state.orbDeviationFromLeft;
+        let similarHorizontalDeviation = otherPlayerHorizontalDeviation === orbHorizontalDeviation;
+        
+        if (this.props.player === "ONE"){
+            if ((orbHeight <= -340) && similarHorizontalDeviation){
+                this.props.changeIsHit(this.props.player);
+            }
+        } else if (this.props.player === "TWO") {
+            if ((orbHeight >= 330) /* && similarHorizontalDeviation */){
+                debugger
+                if(similarHorizontalDeviation){
+                    this.props.changeIsHit(this.props.player);
+                }
+            }
+        }
     }
 
     returnImg() {
+        if (this.state.shoot){
+            this.checkIfIsHit();
+        }
         return (
             <div>
                 <img
@@ -129,7 +159,7 @@ export class Spaceship extends React.Component {
                     shoot={this.state.shoot}
                     horizontalCoordinate={this.state.deviationFromLeft}
                     deviationFromTop={this.state.orbDeviationFromTop}
-                    orb={this.props.orb} />
+                    orb={this.props.orb}/>
             </div>
         );
     }

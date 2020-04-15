@@ -31,8 +31,19 @@
 .gameOverImage{
     position: relative;
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
     width: 600px;
     height: 300px;
-    left: 150px;
+    top: -425px;
+}
+
+.winner{
+    position: relative;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 250x;
+    height: 75px;
     top: -425px;
 }
